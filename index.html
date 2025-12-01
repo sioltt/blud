@@ -254,6 +254,17 @@
         }
 
         function clearEntry(){
+            // If user pressed C immediately after choosing an operator (no second operand entered),
+            // treat it as "undo operator": remove operator and reset to allow entering a different first number.
+            if (operator && waitingForNew) {
+                operator = null;
+                previous = null;
+                current = '0';
+                waitingForNew = false;
+                updateDisplay();
+                return;
+            }
+
             current = '0';
             // If there's a stored `previous` but no active operator, treat C as clearing the whole expression
             if (previous != null && !operator) {
