@@ -237,6 +237,12 @@
 
         function clearEntry(){
             current = '0';
+            // If there's a stored `previous` but no active operator, treat C as clearing the whole expression
+            if (previous != null && !operator) {
+                previous = null;
+            }
+            // Allow immediate typing of a new number
+            waitingForNew = false;
             updateDisplay();
         }
 
@@ -368,7 +374,11 @@
                 e.preventDefault();
                 return;
             }
-            if (e.key.toLowerCase() === 'c') { clearAll(); e.preventDefault(); return; }
+            if (e.key.toLowerCase() === 'c') { 
+                if (clearBtn.textContent === 'AC') clearAll(); else clearEntry();
+                e.preventDefault();
+                return; 
+            }
         });
 
         // init
